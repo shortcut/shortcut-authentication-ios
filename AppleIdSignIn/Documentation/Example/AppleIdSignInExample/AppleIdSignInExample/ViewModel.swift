@@ -33,7 +33,7 @@ class ViewModel: ObservableObject {
                 case .failure(let error):
                     self.error = error.localizedDescription
                 }
-            } receiveValue: { token in
+            } receiveValue: { [weak self] token in
                 self.authToken = token
                 self.error = nil
             }
