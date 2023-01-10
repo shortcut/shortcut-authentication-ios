@@ -108,6 +108,10 @@ class ViewModel: ObservableObject {
                 }
             } receiveValue: { [weak self] state in
                 self?.credentialState = state
+
+                if state == .authorized {
+                    // Go to tab view
+                }
             }
             .store(in: &cancellables)
     }

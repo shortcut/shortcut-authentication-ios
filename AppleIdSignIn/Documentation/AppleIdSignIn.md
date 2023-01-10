@@ -25,6 +25,26 @@ Authenticate with AppleID. `authenticate()` returns token as a `String` as well 
         }
         .store(in: &cancellables)
 ```
+Get the Apple Id credential state from given user id.
+```
+    appleIdSignIn.getCredentialState(for: userId)
+        .receive(on: RunLoop.main)
+        .sink { completion in
+            switch completion {
+            case .finished:
+                break
+            case .failure(let error):
+                self.error = error.localizedDescription
+            }
+        } receiveValue: { [weak self] state in
+            self?.credentialState = state
+
+            if state == .authorized {
+                // Go to tab view
+            }
+        }
+        .store(in: &cancellables)
+```
 Listen to the changes of the `credentialStatePublisher` and if state is revoke then logout user.
 ```
     appleIdSignIn.credentialStatePublisher
