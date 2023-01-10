@@ -27,19 +27,23 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "AppleIdSignIn",
-            dependencies: []
+            dependencies: [],
+            path: "AppleIdSignIn/Sources"
         ),
         .testTarget(
             name: "AppleIdSignInTests",
-            dependencies: ["AppleIdSignIn"]
+            dependencies: ["AppleIdSignIn"],
+            path: "AppleIdSignIn/Tests"
         ),
         .target(
             name: "GoogleSignIn",
-            dependencies: []
+            dependencies: [],
+            path: "GoogleSignIn/Sources"
         ),
         .testTarget(
             name: "GoogleSignInTests",
-            dependencies: ["GoogleSignIn"]
+            dependencies: ["GoogleSignIn"],
+            path: "GoogleSignIn/Tests"
         ),
     ]
 )
