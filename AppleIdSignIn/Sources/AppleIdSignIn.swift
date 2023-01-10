@@ -11,8 +11,8 @@ import Combine
 public class AppleIdSignIn: NSObject, IAppleIdSignIn {
     private var cancellables = Set<AnyCancellable>()
 
-    private var logInWithAppleIdPublisher: PassthroughSubject<String, AppleIdSignInError>?
     private var credentialStateSubject = PassthroughSubject<AppleIdCredentialState, Error>()
+    private var logInWithAppleIdPublisher: PassthroughSubject<String, AppleIdSignInError>?
 
     public lazy var credentialStatePublisher = credentialStateSubject.eraseToAnyPublisher()
 
@@ -91,6 +91,7 @@ extension AppleIdSignIn: ASAuthorizationControllerDelegate {
                 return
             }
             logInWithAppleIdPublisher?.send(token)
+            credentialStateSubject.send(.authorized)
 
         default:
             logInWithAppleIdPublisher?.send(completion: .failure(.failedToRetrieveToken))
