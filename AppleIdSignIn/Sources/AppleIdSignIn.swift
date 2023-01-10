@@ -120,6 +120,6 @@ extension AppleIdSignIn: ASAuthorizationControllerDelegate {
 
 extension AppleIdSignIn: ASAuthorizationControllerPresentationContextProviding {
     public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        ASPresentationAnchor()
+        return UIApplication.shared.keyWindow ?? ASPresentationAnchor()
     }
 }
