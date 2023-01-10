@@ -111,7 +111,7 @@ extension AppleIdSignIn: ASAuthorizationControllerDelegate {
 
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         if case ASAuthorizationError.canceled = error {
-            logInWithAppleIdCredentialPublisher?.send(completion: .failure(.cancelledByUser))
+            logInWithAppleIdCredentialPublisher?.send(completion: .failure(.cancelled))
             return
         }
         logInWithAppleIdCredentialPublisher?.send(completion: .failure(.other(error)))

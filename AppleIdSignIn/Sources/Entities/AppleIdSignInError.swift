@@ -9,7 +9,7 @@ import Foundation
 
 public enum AppleIdSignInError: Error {
     /// Authentication cancelled by user
-    case cancelledByUser
+    case cancelled
 
     /// Failed to retrieve credentials
     case failedToRetrieveCredentials
@@ -24,7 +24,7 @@ public enum AppleIdSignInError: Error {
 extension AppleIdSignInError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .cancelledByUser:
+        case .cancelled:
             return "Authentication Cancelled"
         case .failedToRetrieveToken:
             return "Failed to retrieve token"
