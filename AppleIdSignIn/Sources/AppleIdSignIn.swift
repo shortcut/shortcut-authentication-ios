@@ -27,8 +27,8 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
 
     /// Logs in user with AppleId.
     /// - Returns: A publisher of success token or AppleIdAuthenticatorError
-    public func login(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<String, AppleIdSignInError> {
-        login(requestedScopes: requestedScopes)
+    public func authenticate(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<String, AppleIdSignInError> {
+        authenticate(requestedScopes: requestedScopes)
             .tryMap { credentials in
                 guard
                     let tokenData = credentials.identityToken,
@@ -47,7 +47,7 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
     /// Logs in user with AppleId.
     /// - Parameter requestedScopes: The contact information to be requested from the user during authentication. Default values are fullName and email.
     /// - Returns: A publisher of success ASAuthorizationAppleIDCredential or AppleIdAuthenticatorError
-    public func login(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<ASAuthorizationAppleIDCredential, AppleIdSignInError> {
+    public func authenticate(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<ASAuthorizationAppleIDCredential, AppleIdSignInError> {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = requestedScopes
