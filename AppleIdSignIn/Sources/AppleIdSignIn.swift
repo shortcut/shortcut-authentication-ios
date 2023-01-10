@@ -67,12 +67,12 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
 
     // MARK: Apple Id Credential State
 
-    /// Checks the passed user Apple Id credential state
+    /// Get the passed user Apple Id credential state
     /// - Warning: The data is emitted by *credentialStatePublisher*
     /// - parameters:
     ///    - userId: The id of the user to check the credential state for
     /// - returns: A publisher with the credential state or an error
-    public func checkCredentialState(for userId: String) -> AnyPublisher<AppleIdCredentialState, Error> {
+    public func getCredentialState(for userId: String) -> AnyPublisher<AppleIdCredentialState, Error> {
         ASAuthorizationAppleIDProvider()
             .getCredentialState(forUserID: userId) { credentialState, error in
                 if let error = error {

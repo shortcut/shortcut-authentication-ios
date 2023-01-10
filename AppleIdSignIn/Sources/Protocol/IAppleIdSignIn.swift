@@ -14,10 +14,10 @@ public protocol IAppleIdSignIn {
     /// Apple id credential state publisher.
     var credentialStatePublisher: AnyPublisher<AppleIdCredentialState, Error> { get }
 
-    /// Checks the Apple Id credential state from given user id.
+    /// Get the Apple Id credential state from given user id.
     /// - Parameter userId: User id
     /// - Returns: A publisher of success AppleIdCredentialState or error
-    func checkCredentialState(for userId: String) -> AnyPublisher<AppleIdCredentialState, Error>
+    func getCredentialState(for userId: String) -> AnyPublisher<AppleIdCredentialState, Error>
 
     /// Logs in user with AppleId.
     /// - Returns: A publisher of success token or AppleIdAuthenticatorError
