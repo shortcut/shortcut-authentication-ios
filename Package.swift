@@ -17,7 +17,7 @@ let package = Package(
                 "AppleIdSignIn",
                 "GoogleSignIn"
             ]
-        ),
+        )
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -44,6 +44,6 @@ let package = Package(
             name: "GoogleSignInTests",
             dependencies: ["GoogleSignIn"],
             path: "GoogleSignIn/Tests"
-        ),
+        )
     ]
 )
