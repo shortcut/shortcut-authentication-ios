@@ -11,6 +11,9 @@ public enum AppleIdSignInError: Error {
     /// Authentication cancelled by user
     case cancelledByUser
 
+    /// Failed to retrieve credentials
+    case failedToRetrieveCredentials
+
     /// Failed to retrieve token
     case failedToRetrieveToken
 
@@ -27,6 +30,8 @@ extension AppleIdSignInError: LocalizedError {
             return "Failed to retrieve token"
         case .other(let error):
             return error.localizedDescription
+        case .failedToRetrieveCredentials:
+            return "Failed to retrieve credentials"
         }
     }
 }

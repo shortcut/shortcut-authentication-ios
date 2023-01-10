@@ -12,7 +12,7 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
     private var cancellables = Set<AnyCancellable>()
 
     private var credentialStateSubject = PassthroughSubject<AppleIdCredentialState, Error>()
-    private var logInWithAppleIdPublisher: PassthroughSubject<String, AppleIdSignInError>?
+    private var logInWithAppleIdCredentialPublisher: PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>?
 
     public lazy var credentialStatePublisher = credentialStateSubject.eraseToAnyPublisher()
 
@@ -28,6 +28,26 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
     /// Logs in user with AppleId.
     /// - Returns: A publisher of success token or AppleIdAuthenticatorError
     public func login(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<String, AppleIdSignInError> {
+        login(requestedScopes: requestedScopes)
+            .tryMap { credentials in
+                guard
+                    let tokenData = credentials.identityToken,
+                    let token = String(data: tokenData, encoding: .utf8)
+                else {
+                    throw AppleIdSignInError.failedToRetrieveToken
+                }
+                return token
+            }
+            .mapError {
+                $0 as? AppleIdSignInError ?? .failedToRetrieveToken
+            }
+            .eraseToAnyPublisher()
+    }
+
+    /// Logs in user with AppleId.
+    /// - Parameter requestedScopes: The contact information to be requested from the user during authentication. Default values are fullName and email.
+    /// - Returns: A publisher of success ASAuthorizationAppleIDCredential or AppleIdAuthenticatorError
+    public func login(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<ASAuthorizationAppleIDCredential, AppleIdSignInError> {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = requestedScopes
@@ -37,8 +57,8 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
 
-        let logInWithAppleIdPublisher = PassthroughSubject<String, AppleIdSignInError>()
-        self.logInWithAppleIdPublisher = logInWithAppleIdPublisher
+        let logInWithAppleIdPublisher = PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>()
+        self.logInWithAppleIdCredentialPublisher = logInWithAppleIdPublisher
 
         // The events are sent from the delegate
         return logInWithAppleIdPublisher.eraseToAnyPublisher()
@@ -56,7 +76,6 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
             .getCredentialState(forUserID: userId) { credentialState, error in
                 if let error = error {
                     self.credentialStateSubject.send(completion: .failure(error))
-
                     return
                 }
                 self.credentialStateSubject.send(credentialState.appleIdCredentialState)
@@ -82,28 +101,20 @@ extension AppleIdSignIn: ASAuthorizationControllerDelegate {
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
-
-            guard
-                let tokenData = appleIDCredential.identityToken,
-                let token = String(data: tokenData, encoding: .utf8)
-            else {
-                logInWithAppleIdPublisher?.send(completion: .failure(.failedToRetrieveToken))
-                return
-            }
-            logInWithAppleIdPublisher?.send(token)
+            logInWithAppleIdCredentialPublisher?.send(appleIDCredential)
             credentialStateSubject.send(.authorized)
 
         default:
-            logInWithAppleIdPublisher?.send(completion: .failure(.failedToRetrieveToken))
+            logInWithAppleIdCredentialPublisher?.send(completion: .failure(.failedToRetrieveCredentials))
         }
     }
 
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         if case ASAuthorizationError.canceled = error {
-            logInWithAppleIdPublisher?.send(completion: .failure(.cancelledByUser))
+            logInWithAppleIdCredentialPublisher?.send(completion: .failure(.cancelledByUser))
             return
         }
-        logInWithAppleIdPublisher?.send(completion: .failure(.other(error)))
+        logInWithAppleIdCredentialPublisher?.send(completion: .failure(.other(error)))
     }
 }
 
