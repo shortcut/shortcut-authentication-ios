@@ -22,8 +22,8 @@
 		404FDA63296D9F8000F79E98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		404FDA65296D9F8000F79E98 /* AppleIdSignInExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AppleIdSignInExample.entitlements; sourceTree = "<group>"; };
 		404FDA67296D9F8000F79E98 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		404FDA6E296DA01D00F79E98 /* ShortcutAuthentication */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ShortcutAuthentication; path = ../../../..; sourceTree = "<group>"; };
 		404FDA72296DA0A500F79E98 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		40F7E465296DB8CC008D38B3 /* ShortcutAuthentication */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ShortcutAuthentication; path = ../../../../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +58,7 @@
 		404FDA5E296D9F7F00F79E98 /* AppleIdSignInExample */ = {
 			isa = PBXGroup;
 			children = (
-				404FDA6E296DA01D00F79E98 /* ShortcutAuthentication */,
+				40F7E465296DB8CC008D38B3 /* ShortcutAuthentication */,
 				404FDA5F296D9F7F00F79E98 /* AppleIdSignInExampleApp.swift */,
 				404FDA61296D9F7F00F79E98 /* ContentView.swift */,
 				404FDA72296DA0A500F79E98 /* ViewModel.swift */,

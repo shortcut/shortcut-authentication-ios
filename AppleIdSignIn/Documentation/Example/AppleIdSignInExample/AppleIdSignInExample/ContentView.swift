@@ -12,7 +12,7 @@ struct ContentView: View {
     @StateObject private var viewModel = ViewModel()
 
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             VStack(alignment: .leading, spacing: 8) {
                 if let error = viewModel.error {
                     Text("Error: \(error)")
@@ -30,6 +30,16 @@ struct ContentView: View {
 
             Button("Sign in with Apple") {
                 viewModel.signInWithApple()
+            }
+
+            Button("Sign in with Apple with credentials") {
+                viewModel.signInWithAppleWithCredentials()
+            }
+
+            if let userId = viewModel.userId {
+                Button("Get user Credentials state") {
+                    viewModel.getUserCredentialState(userId: userId)
+                }
             }
         }
     }
