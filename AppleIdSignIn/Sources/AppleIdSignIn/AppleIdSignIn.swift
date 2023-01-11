@@ -12,8 +12,8 @@ import Combine
 public class AppleIdSignIn: NSObject, IAppleIdSignIn {
     private var cancellables = Set<AnyCancellable>()
 
-    private var credentialStateSubject = PassthroughSubject<AppleIdCredentialState, Error>()
-    private var logInWithAppleIdCredentialPublisher: PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>?
+    var credentialStateSubject = PassthroughSubject<AppleIdCredentialState, Error>()
+    var logInWithAppleIdCredentialPublisher: PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>?
 
     public lazy var credentialStatePublisher = credentialStateSubject.eraseToAnyPublisher()
 
@@ -95,32 +95,5 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
                 self?.credentialStateSubject.send(.revoked)
             }
             .store(in: &cancellables)
-    }
-}
-
-extension AppleIdSignIn: ASAuthorizationControllerDelegate {
-    public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        switch authorization.credential {
-        case let appleIDCredential as ASAuthorizationAppleIDCredential:
-            logInWithAppleIdCredentialPublisher?.send(appleIDCredential)
-            credentialStateSubject.send(.authorized)
-
-        default:
-            logInWithAppleIdCredentialPublisher?.send(completion: .failure(.failedToRetrieveCredentials))
-        }
-    }
-
-    public func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        if case ASAuthorizationError.canceled = error {
-            logInWithAppleIdCredentialPublisher?.send(completion: .failure(.cancelled))
-            return
-        }
-        logInWithAppleIdCredentialPublisher?.send(completion: .failure(.other(error)))
-    }
-}
-
-extension AppleIdSignIn: ASAuthorizationControllerPresentationContextProviding {
-    public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return UIApplication.shared.keyWindow ?? ASPresentationAnchor()
     }
 }
