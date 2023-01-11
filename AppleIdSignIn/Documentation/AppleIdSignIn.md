@@ -3,13 +3,13 @@ Shortcut Authentication provides a convenient way to authenticate user with Appl
 
 ## Usage
 To authenticate user with AppleID, use IAppleIdSignIn protocol which provides the functionalities to login user with AppleID.
-Before you start using this package, you'll need to add Sign in with Apple capability to your project, otherwise it will not work.
+Before you start using this package, you'll need to add **_Sign in with Apple_** capability to your project, otherwise it will not work.
 
-Inject the AppleIdSignIn using [ShortcutFoundation](https://github.com/shortcut/shortcut-foundation-ios.git).(Injection is optional but if you would like to listen to the account revoke notification from users iCloud account you'll need to keep the instance alive and you'll need to inject AppleIdSignIn)
+Create an instance of IAppleIdSignIn. If you would like to listen to the account revoke notification from users iCloud account you'll need to keep the instance alive.
 ```
-@Inject private var appleIdSignIn: IAppleIdSignIn
+private let appleIdSignIn = AppleIdSignIn()
 ```
-Authenticate with AppleID. `authenticate()` returns token as a `String` as well as `ASAuthorizationAppleIDCredential`.
+Authenticate with AppleID. `authenticate()` returns token as a `String` as well as `ASAuthorizationAppleIDCredential`. You can also pass `requestedScopes` as a parameter, default requested scopes are fullName and email.
 ```
     appleIdSignIn.authenticate()
         .receive(on: RunLoop.main)
@@ -25,7 +25,7 @@ Authenticate with AppleID. `authenticate()` returns token as a `String` as well 
         }
         .store(in: &cancellables)
 ```
-Get the Apple Id credential state from given user id.
+Get the Apple Id credential state from given user id. `AppleIdCredentialSate` is an enum which represents the states of AppleID credentials. For example,  `.authorize` or `.revoked`.
 ```
     appleIdSignIn.getCredentialState(for: userId)
         .receive(on: RunLoop.main)
@@ -45,7 +45,7 @@ Get the Apple Id credential state from given user id.
         }
         .store(in: &cancellables)
 ```
-Listen to the changes of the `credentialStatePublisher` and if state is revoke then logout user.
+Listen to the changes of the `credentialStatePublisher` and if the state is revoked, it's recommended to log out the user but it's not obligated by Apple.
 ```
     appleIdSignIn.credentialStatePublisher
         .receive(on: RunLoop.main)
