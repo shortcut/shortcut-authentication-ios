@@ -9,36 +9,36 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = ViewModel()
+    @StateObject private var vm = ViewModel()
 
     var body: some View {
         VStack(spacing: 20) {
             VStack(alignment: .leading, spacing: 8) {
-                if let error = viewModel.error {
+                if let error = vm.error {
                     Text("Error: \(error)")
                         .font(.headline)
                 } else {
-                    Text("Status: \(viewModel.credentialState.rawValue)")
+                    Text("Status: \(vm.credentialState.rawValue)")
                         .font(.headline)
                 }
 
-                Text(viewModel.authToken)
+                Text(vm.authToken)
                     .minimumScaleFactor(0.4)
                     .frame(maxHeight: 250)
             }
             .padding()
 
             Button("Sign in with Apple") {
-                viewModel.signInWithApple()
+                vm.signInWithApple()
             }
 
             Button("Sign in with Apple with credentials") {
-                viewModel.signInWithAppleWithCredentials()
+                vm.signInWithAppleWithCredentials()
             }
 
-            if let userId = viewModel.userId {
-                Button("Get user Credentials state") {
-                    viewModel.getUserCredentialState(userId: userId)
+            if let userId = vm.userId {
+                Button("Get current user's credential state") {
+                    vm.getUserCredentialState(userId: userId)
                 }
             }
         }
