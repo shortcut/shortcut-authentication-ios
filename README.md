@@ -11,6 +11,6 @@ Contains authentication support for multiple providers.
 
 - [ ] Biometric authentication (FaceID/TouchID)
 - [x] [Sign in with Apple](AppleIdSignIn/Documentation/AppleIdSignIn.md)
-- [ ] Sign in with Goole
+- [ ] Sign in with Google
 - [ ] Sign in Swedish BankID
 
