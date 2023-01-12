@@ -10,6 +10,6 @@ import AuthenticationServices
 
 extension AppleIdSignIn: ASAuthorizationControllerPresentationContextProviding {
     public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        return UIApplication.shared.keyWindow ?? ASPresentationAnchor()
+        UIApplication.shared.keyWindow ?? ASPresentationAnchor()
     }
 }
