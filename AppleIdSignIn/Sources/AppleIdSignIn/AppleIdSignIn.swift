@@ -13,7 +13,7 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
     private var cancellables = Set<AnyCancellable>()
 
     var credentialStateSubject = PassthroughSubject<AppleIdCredentialState, Error>()
-    var logInWithAppleIdCredentialPublisher: PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>?
+    var authAppleIdCredentialPublisher: PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>?
 
     public lazy var credentialStatePublisher = credentialStateSubject.eraseToAnyPublisher()
 
@@ -25,6 +25,8 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
     deinit {
         cancellables.forEach { $0.cancel() }
     }
+
+    // MARK: Authenticate
 
     /// Logs in user with AppleId.
     /// - Returns: A publisher of success token or AppleIdAuthenticatorError
@@ -58,14 +60,15 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
 
-        let logInWithAppleIdPublisher = PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>()
-        self.logInWithAppleIdCredentialPublisher = logInWithAppleIdPublisher
+        // We need to create a new subject every time, so when we get error our subscription to this publisher won't be broken
+        let authAppleIdCredentialPublisher = PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>()
+        self.authAppleIdCredentialPublisher = authAppleIdCredentialPublisher
 
         // The events are sent from the delegate
-        return logInWithAppleIdPublisher.eraseToAnyPublisher()
+        return authAppleIdCredentialPublisher.eraseToAnyPublisher()
     }
 
-    // MARK: Apple Id Credential State
+    // MARK: Get Credential State
 
     /// Get the passed user Apple Id credential state
     /// - Warning: The data is emitted by *credentialStatePublisher*
@@ -84,6 +87,8 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
 
         return credentialStatePublisher
     }
+
+    // MARK: - Credential Revoke Notification
 
     /// Listens to the current user Apple Id credential revoke notification.
     /// Triggers when user stops using AppleId for this app from their iCloud account .
