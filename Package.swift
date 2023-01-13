@@ -21,6 +21,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
+        .package(url: "https://github.com/google/GoogleSignIn-iOS.git", .upToNextMajor(from: "7.0.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -37,7 +38,9 @@ let package = Package(
         ),
         .target(
             name: "GoogleIdSignIn",
-            dependencies: [],
+            dependencies: [
+                .product(name: "GoogleSignIn", package: "googlesignin-ios")
+            ],
             path: "GoogleIdSignIn/Sources"
         ),
         .testTarget(
