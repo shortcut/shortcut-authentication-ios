@@ -3,6 +3,7 @@
 //  SignInWithGoogleExample
 //
 //  Created by Sheikh Bayazid on 2023-01-13.
+//  Copyright © 2023 Shortcut Scandinavia Apps AB. All rights reserved.
 //
 
 import Combine
@@ -57,5 +58,10 @@ final class ViewModel: ObservableObject {
                 self?.authToken = token
             }
             .store(in: &cancellables)
+    }
+
+    func signOut() {
+        googleIdSignIn.signOut()
+        authToken = nil
     }
 }
