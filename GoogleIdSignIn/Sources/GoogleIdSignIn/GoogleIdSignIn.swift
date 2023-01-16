@@ -12,17 +12,21 @@ import GoogleSignIn
 import SwiftUI
 
 public class GoogleIdSignIn: IGoogleIdSignIn {
+    public var currentUser: GIDGoogleUser? {
+        GIDSignIn.sharedInstance.currentUser
+    }
+
     public init() { }
 
     public func handleOpenAppURL(_ url: URL)  {
         GIDSignIn.sharedInstance.handle(url)
     }
 
-    public func restorePreviousSignIn() -> AnyPublisher<String, Error> {
+    public func restorePreviousSignIn() -> AnyPublisher<String, GoogleIdSignInError> {
         Future { promise in
             GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-                if let error = error {
-                    promise(.failure(error))
+                if let error = error as? GIDSignInError {
+                    promise(.failure(error.asGoogleIdSignInError()))
                     return
                 }
 
@@ -37,11 +41,11 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
         .eraseToAnyPublisher()
     }
 
-    public func signIn(controller: UIViewController) -> AnyPublisher<String, Error> {
+    public func signIn(controller: UIViewController) -> AnyPublisher<String, GoogleIdSignInError> {
         Future { promise  in
             GIDSignIn.sharedInstance.signIn(withPresenting: controller) { signInResult, error in
-                if let error = error {
-                    promise(.failure(error))
+                if let error = error as? GIDSignInError {
+                    promise(.failure(error.asGoogleIdSignInError()))
                     return
                 }
 
@@ -55,7 +59,7 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
                         promise(.success(idToken.tokenString))
                         return
                     }
-                    promise(.failure(error ?? GoogleIdSignInError.missingUser))
+                    promise(.failure(GoogleIdSignInError.missingUser))
                 }
             }
         }

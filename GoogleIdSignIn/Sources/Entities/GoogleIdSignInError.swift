@@ -7,9 +7,34 @@
 //
 
 import Foundation
+import GoogleSignIn
 
+public enum GoogleIdSignInError: Error {
+    /// Indicates the user canceled the sign in request.
+    case cancelled
 
-enum GoogleIdSignInError: Error {
+    /// Indicates an Enterprise Mobility Management related error has occurred.
+    case emm
+
+    /// Indicates there is an operation on a previous user.
+    case mismatchWithCurrentUser
+
+    /// Indicates missing sign in result.
     case missingResult
+
+    /// Indicates missing user.
     case missingUser
+
+    /// Indicates there are no valid auth tokens in the keychain. This error code will be returned by `restorePreviousSignIn`
+    /// if the user has not signed in before or if they have since signed out.
+    case hasNoAuthInKeychain
+
+    /// Indicates a problem reading or writing to the application keychain.
+    case keychain
+
+    /// Indicates the requested scopes have already been granted to the currentUser.
+    case scopesAlreadyGranted
+
+    /// Indicates an unknown error has occurred.
+    case unknown
 }
