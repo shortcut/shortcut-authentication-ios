@@ -32,6 +32,13 @@ public protocol IGoogleIdSignIn {
     /// - Returns: A publisher of the user Google authentication token or an error
     func signIn(controller: UIViewController) -> AnyPublisher<String, GoogleIdSignInError>
 
+
+
+    /// Signs in a user.
+    /// - Parameter controller: The presenting viewController
+    /// - Returns: A publisher of GIDGoogleUser or an error
+    func signIn(controller: UIViewController) -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError>
+
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of GIDSignInResult or an error

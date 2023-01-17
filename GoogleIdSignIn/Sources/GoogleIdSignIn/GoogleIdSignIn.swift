@@ -73,11 +73,20 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
                     return idToken
                 }
 
-                throw GoogleIdSignInError.missingUser
+                throw GoogleIdSignInError.missingToken
             }
             .mapError {
                 $0 as? GoogleIdSignInError ?? .missingToken
             }
+            .eraseToAnyPublisher()
+    }
+
+    /// Signs in a user.
+    /// - Parameter controller: The presenting viewController
+    /// - Returns: A publisher of GIDGoogleUser or an error
+    public func signIn(controller: UIViewController) -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError> {
+        signIn(controller: controller)
+            .map { $0.user }
             .eraseToAnyPublisher()
     }
 
