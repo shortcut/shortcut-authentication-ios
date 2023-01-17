@@ -22,6 +22,9 @@ public enum GoogleIdSignInError: Error {
     /// Indicates missing sign in result.
     case missingResult
 
+    /// Indicates missing token.
+    case missingToken
+
     /// Indicates missing user.
     case missingUser
 
