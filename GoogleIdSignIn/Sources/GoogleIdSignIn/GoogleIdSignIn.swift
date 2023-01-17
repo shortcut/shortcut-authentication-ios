@@ -28,6 +28,23 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
     /// Attempts to restore a previous user sign-in without interaction.
     /// - Returns: A publisher of the user Google authentication token or an error
     public func restorePreviousSignIn() -> AnyPublisher<String, GoogleIdSignInError> {
+        restorePreviousSignIn()
+            .tryMap { user in
+                if let token = user.idToken?.tokenString {
+                    return token
+                }
+
+                throw GoogleIdSignInError.missingUser
+            }
+            .mapError {
+                $0 as? GoogleIdSignInError ?? .missingUser
+            }
+            .eraseToAnyPublisher()
+    }
+
+    /// Attempts to restore a previous user sign-in without interaction.
+    /// - Returns: A publisher of tGIDGoogleUser or an error
+    public func restorePreviousSignIn() -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError> {
         Future { promise in
             GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
                 if let error = error as? GIDSignInError {
@@ -35,12 +52,12 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
                     return
                 }
 
-                guard let user = user, let token = user.idToken?.tokenString else {
+                guard let user = user else {
                     promise(.failure(GoogleIdSignInError.missingUser))
                     return
                 }
 
-                promise(.success(token))
+                promise(.success(user))
             }
         }
         .eraseToAnyPublisher()

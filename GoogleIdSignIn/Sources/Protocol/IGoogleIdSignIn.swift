@@ -23,6 +23,10 @@ public protocol IGoogleIdSignIn {
     /// - Returns: A publisher of the user Google authentication token or an error
     func restorePreviousSignIn() -> AnyPublisher<String, GoogleIdSignInError>
 
+    /// Attempts to restore a previous user sign-in without interaction.
+    /// - Returns: A publisher of GIDGoogleUser or an error
+    func restorePreviousSignIn() -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError>
+
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of the user Google authentication token or an error
