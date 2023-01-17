@@ -19,6 +19,11 @@ public protocol IGoogleIdSignIn {
     /// - Parameter url: The Google redirect url
     func handleOpenAppURL(_ url: URL)
 
+    /// Refresh the user’s access and ID tokens if they have expired or are about to expire.
+    /// - Parameter user: GIDGoogleUser
+    /// - Returns: A publisher of GIDGoogleUser or an error
+    func refreshTokenIfNeeded(user: GIDGoogleUser) -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError>
+
     /// Attempts to restore a previous user sign-in without interaction.
     /// - Returns: A publisher of the user Google authentication token or an error
     func restorePreviousSignIn() -> AnyPublisher<String, GoogleIdSignInError>

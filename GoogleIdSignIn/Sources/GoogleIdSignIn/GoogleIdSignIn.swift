@@ -25,6 +25,28 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
         GIDSignIn.sharedInstance.handle(url)
     }
 
+    /// Refresh the user’s access and ID tokens if they have expired or are about to expire.
+    /// - Parameter user: GIDGoogleUser
+    /// - Returns: A publisher of GIDGoogleUser or an error
+    public func refreshTokenIfNeeded(user: GIDGoogleUser) -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError> {
+        Future { promise in
+            user.refreshTokensIfNeeded { user, error in
+                if let error = error as? GIDSignInError {
+                    promise(.failure(error.asGoogleIdSignInError()))
+                    return
+                }
+
+                guard let user = user else {
+                    promise(.failure(GoogleIdSignInError.missingResult))
+                    return
+                }
+
+                promise(.success(user))
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+
     /// Attempts to restore a previous user sign-in without interaction.
     /// - Returns: A publisher of the user Google authentication token or an error
     public func restorePreviousSignIn() -> AnyPublisher<String, GoogleIdSignInError> {
