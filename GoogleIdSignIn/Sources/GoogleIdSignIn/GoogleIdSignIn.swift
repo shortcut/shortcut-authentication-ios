@@ -21,7 +21,7 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
 
     /// Handles the Google authentication redirect URL.
     /// - Parameter url: The Google redirect url
-    public func handleOpenAppURL(_ url: URL)  {
+    public func handleOpenAppURL(_ url: URL) {
         GIDSignIn.sharedInstance.handle(url)
     }
 
@@ -84,7 +84,7 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
         }
         .eraseToAnyPublisher()
     }
-    
+
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of the user Google authentication token or an error
