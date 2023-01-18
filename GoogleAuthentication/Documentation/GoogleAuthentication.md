@@ -27,7 +27,7 @@ func handleOpenAppURL(_ url: URL) {
 ```
     
 ### Restore previous sign in:
-If you'd like to restore your user on appear of your app's window, call `restorePreviousSignIn()` on onAppear of the app's window view:
+When you launch your apple your Google `currentUser` is nil and if you'd like to restore your `currentUser` call `restorePreviousSignIn()`:
 
 ```
 func restorePreviousSignIn() {

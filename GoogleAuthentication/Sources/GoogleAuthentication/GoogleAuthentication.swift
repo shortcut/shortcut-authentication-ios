@@ -134,7 +134,7 @@ public class GoogleAuthentication: IGoogleAuthentication {
         .eraseToAnyPublisher()
     }
 
-    /// Signs out the `currentUser`, removing it from the keychain.
+    /// Signs out the `currentUser`, removing it from the Google SDK's storage.
     public func signOut() {
         GIDSignIn.sharedInstance.signOut()
     }

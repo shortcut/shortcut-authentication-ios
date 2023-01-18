@@ -47,6 +47,6 @@ public protocol IGoogleAuthentication {
     /// - Returns: A publisher of GIDSignInResult or an error
     func signIn(controller: UIViewController) -> AnyPublisher<GIDSignInResult, GoogleAuthenticationError>
 
-    /// Signs out the `currentUser`, removing it from the keychain.
+    /// Signs out the `currentUser`, removing it from the Google SDK's storage.
     func signOut()
 }
