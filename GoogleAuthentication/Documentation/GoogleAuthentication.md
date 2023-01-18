@@ -4,10 +4,10 @@ Shortcut Authentication provides a convenient way to sign in user with Google us
 ## Important
 Before you start using this package, you'll need to complete these following steps in-order to make it work in your project.
 
-1. Get OAuth client ID from [Google](https://developers.google.com/identity/sign-in/ios/start-integrating)
+1. Get OAuth client ID from [Google](https://developers.google.com/identity/sign-in/ios/start-integrating#get_an_oauth_client_id)
 2. Add the OAuth client ID as GIDClientID and reversed OAuth client ID as URLSchemes in your project info.plist file.
 
-To see an example go to [Google Documentation](https://developers.google.com/identity/sign-in/ios/start-integrating) or checkout the [example](Example) project.
+To see an example go to [Google Documentation](https://developers.google.com/identity/sign-in/ios/start-integrating#configure_app_project) or checkout the [example](Example) project.
 
 ## Usage
 Once these steps are complete, you can start adding the support for GoogleAuthentication.
