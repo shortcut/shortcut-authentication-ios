@@ -13,7 +13,6 @@
 		409914422971634700C754C7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 409914412971634700C754C7 /* Preview Assets.xcassets */; };
 		4099144B297168EC00C754C7 /* ShortcutAuthentication in Frameworks */ = {isa = PBXBuildFile; productRef = 4099144A297168EC00C754C7 /* ShortcutAuthentication */; };
 		409914502971A87A00C754C7 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4099144F2971A87A00C754C7 /* ViewModel.swift */; };
-		409914522971A92400C754C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409914512971A92400C754C7 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,7 +25,6 @@
 		409914482971634C00C754C7 /* ShortcutAuthentication */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ShortcutAuthentication; path = ../../../..; sourceTree = "<group>"; };
 		4099144C2971874100C754C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4099144F2971A87A00C754C7 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		409914512971A92400C754C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +61,6 @@
 			isa = PBXGroup;
 			children = (
 				4099144C2971874100C754C7 /* Info.plist */,
-				409914512971A92400C754C7 /* AppDelegate.swift */,
 				409914392971634600C754C7 /* SignInWithGoogleExampleApp.swift */,
 				4099143B2971634600C754C7 /* ContentView.swift */,
 				4099144F2971A87A00C754C7 /* ViewModel.swift */,
@@ -162,7 +159,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				409914522971A92400C754C7 /* AppDelegate.swift in Sources */,
 				4099143C2971634600C754C7 /* ContentView.swift in Sources */,
 				409914502971A87A00C754C7 /* ViewModel.swift in Sources */,
 				4099143A2971634600C754C7 /* SignInWithGoogleExampleApp.swift in Sources */,

@@ -11,7 +11,6 @@ import SwiftUI
 @main
 struct SignInWithGoogleExampleApp: App {
     @StateObject private var vm = ViewModel()
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {
         WindowGroup {
