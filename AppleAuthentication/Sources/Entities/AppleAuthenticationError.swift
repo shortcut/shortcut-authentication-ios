@@ -1,5 +1,5 @@
 //
-//  AppleIdSignInError.swift
+//  AppleAuthenticationError.swift
 //  ShortcutAuthentication
 //
 //  Created by Sheikh Bayazid on 2023-01-10.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum AppleIdSignInError: Error {
+public enum AppleAuthenticationError: Error {
     /// Authentication cancelled by user
     case cancelled
 

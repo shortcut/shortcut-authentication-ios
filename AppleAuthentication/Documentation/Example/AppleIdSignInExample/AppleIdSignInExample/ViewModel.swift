@@ -1,19 +1,19 @@
 //
 //  ViewModel.swift
-//  AppleIdSignInExample
+//  AppleAuthenticationExample
 //
 //  Created by Sheikh Bayazid on 2023-01-10.
 //  Copyright © 2023 Shortcut Scandinavia Apps AB. All rights reserved.
 //
 
-import AppleIdSignIn
+import AppleAuthentication
 import Combine
 import Foundation
 
 class ViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
-    private let appleIdSignIn = AppleIdSignIn()
+    private let appleAuthentication = AppleAuthentication()
 
     @Published private(set) var authToken = ""
     @Published private(set) var credentialState = AppleIdCredentialState.notFound
@@ -26,7 +26,7 @@ class ViewModel: ObservableObject {
     }
 
     func signInWithApple() {
-        appleIdSignIn.authenticate()
+        appleAuthentication.authenticate()
             .receive(on: RunLoop.main)
             .sink { completion in
                 switch completion {
@@ -43,7 +43,7 @@ class ViewModel: ObservableObject {
     }
 
     private func listenToCredentialState() {
-        appleIdSignIn.credentialStatePublisher
+        appleAuthentication.credentialStatePublisher
             .receive(on: RunLoop.main)
             .sink { _ in
             } receiveValue: { [weak self] state in
@@ -53,7 +53,7 @@ class ViewModel: ObservableObject {
     }
 
     func signInWithAppleWithCredentials() {
-        appleIdSignIn.authenticate()
+        appleAuthentication.authenticate()
             .receive(on: RunLoop.main)
             .sink { completion in
                 switch completion {
@@ -97,7 +97,7 @@ class ViewModel: ObservableObject {
     }
 
     func getUserCredentialState(userId: String) {
-        appleIdSignIn.getCredentialState(for: userId)
+        appleAuthentication.getCredentialState(for: userId)
             .receive(on: RunLoop.main)
             .sink { completion in
                 switch completion {

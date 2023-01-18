@@ -1,5 +1,5 @@
 //
-//  AppleIdSignIn+Delegate.swift
+//  AppleAuthentication+Delegate.swift
 //  ShortcutAuthentication
 //
 //  Created by Sheikh Bayazid on 2023-01-11.
@@ -8,7 +8,7 @@
 
 import AuthenticationServices
 
-extension AppleIdSignIn: ASAuthorizationControllerDelegate {
+extension AppleAuthentication: ASAuthorizationControllerDelegate {
     public func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:

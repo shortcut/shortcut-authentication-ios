@@ -14,7 +14,7 @@ let package = Package(
         .library(
             name: "ShortcutAuthentication",
             targets: [
-                "AppleIdSignIn",
+                "AppleAuthentication",
                 "GoogleAuthentication"
             ]
         )
@@ -27,14 +27,14 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "AppleIdSignIn",
+            name: "AppleAuthentication",
             dependencies: [],
-            path: "AppleIdSignIn/Sources"
+            path: "AppleAuthentication/Sources"
         ),
         .testTarget(
-            name: "AppleIdSignInTests",
-            dependencies: ["AppleIdSignIn"],
-            path: "AppleIdSignIn/Tests"
+            name: "AppleAuthenticationTests",
+            dependencies: ["AppleAuthentication"],
+            path: "AppleAuthentication/Tests"
         ),
         .target(
             name: "GoogleAuthentication",

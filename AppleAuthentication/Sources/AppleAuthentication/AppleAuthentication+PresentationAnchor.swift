@@ -1,5 +1,5 @@
 //
-//  AppleIdSignIn+PresentationAnchor.swift
+//  AppleAuthentication+PresentationAnchor.swift
 //  ShortcutAuthentication
 //
 //  Created by Sheikh Bayazid on 2023-01-11.
@@ -8,7 +8,7 @@
 
 import AuthenticationServices
 
-extension AppleIdSignIn: ASAuthorizationControllerPresentationContextProviding {
+extension AppleAuthentication: ASAuthorizationControllerPresentationContextProviding {
     public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         UIApplication.shared.keyWindow ?? ASPresentationAnchor()
     }
