@@ -21,7 +21,7 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
 
     /// Handles the Google authentication redirect URL.
     /// - Parameter url: The Google redirect url
-    public func handleOpenAppURL(_ url: URL) {
+    public func handleOpenURL(_ url: URL) {
         GIDSignIn.sharedInstance.handle(url)
     }
 

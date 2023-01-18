@@ -19,7 +19,7 @@ final class ViewModel: ObservableObject {
     @Published private(set) var authToken: String?
 
     func handleOpenAppURL(_ url: URL) {
-        googleIdSignIn.handleOpenAppURL(url)
+        googleIdSignIn.handleOpenURL(url)
     }
 
     func restorePreviousSignIn() {

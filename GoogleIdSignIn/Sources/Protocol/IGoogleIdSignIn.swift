@@ -17,7 +17,7 @@ public protocol IGoogleIdSignIn {
 
     /// Handles the Google authentication redirect URL.
     /// - Parameter url: The Google redirect url
-    func handleOpenAppURL(_ url: URL)
+    func handleOpenURL(_ url: URL)
 
     /// Refresh the user’s access and ID tokens if they have expired or are about to expire.
     /// - Parameter user: GIDGoogleUser
