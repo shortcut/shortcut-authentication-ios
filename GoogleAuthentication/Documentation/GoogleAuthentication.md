@@ -21,54 +21,17 @@ private let googleAuthentication = GoogleAuthentication()
 In your app's window or scene, register a handler to receive the URL and call `handleOpenURL(_:)`.
 
 ```
-    func handleOpenAppURL(_ url: URL) {
-        googleAuthentication.handleOpenURL(url)
-    }
+func handleOpenAppURL(_ url: URL) {
+    googleAuthentication.handleOpenURL(url)
+}
 ```
     
 ### Restore previous sign in:
 If you'd like to restore your user on appear of your app's window, call `restorePreviousSignIn()` on onAppear of the app's window view:
 
 ```
-    func restorePreviousSignIn() {
-        googleAuthentication.restorePreviousSignIn()
-            .receive(on: RunLoop.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-
-                case .failure(let error):
-                    debugPrint(error)
-                }
-            } receiveValue: { [weak self] token in
-                self?.authToken = token
-            }
-            .store(in: &cancellables)
-    }
-```
-    
-### Calling the `handleOpenAppURL(_:)` and `restorePreviousSignIn()` in App's window:
-```
-        WindowGroup {
-            ContentView()
-                .onOpenURL { url in
-                    handleOpenAppURL(url)
-                }
-                .onAppear {
-                    restorePreviousSignIn()
-                }
-        }
-```
-
-### Sign in with Google:
-Sign in a user using `signIn(controller:)`. It returns a token as a `String` as well as `GIDGoogleUser` and `GIDSignInResult`.
-```
-    guard let rootViewController = UIApplication.shared.rootViewController else {
-        return
-    }
-
-    googleAuthentication.signIn(controller: rootViewController)
+func restorePreviousSignIn() {
+    googleAuthentication.restorePreviousSignIn()
         .receive(on: RunLoop.main)
         .sink { completion in
             switch completion {
@@ -82,30 +45,67 @@ Sign in a user using `signIn(controller:)`. It returns a token as a `String` as 
             self?.authToken = token
         }
         .store(in: &cancellables)
+}
+```
+    
+Calling the `handleOpenAppURL(_:)` and `restorePreviousSignIn()` in App's window:
+```
+WindowGroup {
+    ContentView()
+        .onOpenURL { url in
+            handleOpenAppURL(url)
+        }
+        .onAppear {
+            restorePreviousSignIn()
+        }
+}
+```
+
+### Sign in with Google:
+Sign in a user using `signIn(controller:)`. It returns a token as a `String` as well as `GIDGoogleUser` and `GIDSignInResult`.
+```
+guard let rootViewController = UIApplication.shared.rootViewController else {
+    return
+}
+
+googleAuthentication.signIn(controller: rootViewController)
+    .receive(on: RunLoop.main)
+    .sink { completion in
+        switch completion {
+        case .finished:
+            break
+
+        case .failure(let error):
+            debugPrint(error)
+        }
+    } receiveValue: { [weak self] token in
+        self?.authToken = token
+    }
+    .store(in: &cancellables)
 ```
 
 ### Restore token if needed:
 If you'll need to refresh the user use `refreshTokenIfNeeded(user:)` and pass the user, it returns the refreshed user.
 
 ```
-    guard let user = user else {
-        return
-    }
+guard let user = user else {
+    return
+}
 
-    googleAuthentication.refreshTokenIfNeeded(user: user)
-        .receive(on: RunLoop.main)
-        .sink { completion in
-            switch completion {
-            case .finished:
-                break
+googleAuthentication.refreshTokenIfNeeded(user: user)
+    .receive(on: RunLoop.main)
+    .sink { completion in
+        switch completion {
+        case .finished:
+            break
 
-            case .failure(let error):
-                debugPrint(error)
-            }
-        } receiveValue: { [weak self] user in
-            self?.user = user
+        case .failure(let error):
+            debugPrint(error)
         }
-        .store(in: &cancellables)
+    } receiveValue: { [weak self] user in
+        self?.user = user
+    }
+    .store(in: &cancellables)
 ```
 
 To find more see the [example](Example) project.
