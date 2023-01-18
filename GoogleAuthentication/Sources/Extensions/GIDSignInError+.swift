@@ -9,8 +9,8 @@
 import GoogleSignIn
 
 extension GIDSignInError {
-    /// Map GIDSignInError to SignInWithGoogleError
-    func asSignInWithGoogleError() -> SignInWithGoogleError {
+    /// Map GIDSignInError to GoogleAuthenticationError
+    func asGoogleAuthenticationError() -> GoogleAuthenticationError {
         switch code {
         case .keychain:
             return .keychain

@@ -1,5 +1,5 @@
 //
-//  SignInWithGoogle.swift
+//  GoogleAuthentication.swift
 //  ShortcutAuthentication
 //
 //  Created by Sheikh Bayazid on 2023-01-09.
@@ -11,7 +11,7 @@ import Foundation
 import GoogleSignIn
 import SwiftUI
 
-public class SignInWithGoogle: ISignInWithGoogle {
+public class GoogleAuthentication: IGoogleAuthentication {
     /// The `GIDGoogleUser` representing the current user or `nil` if there is no signed-in user.
     public var currentUser: GIDGoogleUser? {
         GIDSignIn.sharedInstance.currentUser
@@ -28,16 +28,16 @@ public class SignInWithGoogle: ISignInWithGoogle {
     /// Refresh the user’s access and ID tokens if they have expired or are about to expire.
     /// - Parameter user: GIDGoogleUser
     /// - Returns: A publisher of GIDGoogleUser or an error
-    public func refreshTokenIfNeeded(user: GIDGoogleUser) -> AnyPublisher<GIDGoogleUser, SignInWithGoogleError> {
+    public func refreshTokenIfNeeded(user: GIDGoogleUser) -> AnyPublisher<GIDGoogleUser, GoogleAuthenticationError> {
         Future { promise in
             user.refreshTokensIfNeeded { user, error in
                 if let error = error as? GIDSignInError {
-                    promise(.failure(error.asSignInWithGoogleError()))
+                    promise(.failure(error.asGoogleAuthenticationError()))
                     return
                 }
 
                 guard let user = user else {
-                    promise(.failure(SignInWithGoogleError.missingResult))
+                    promise(.failure(GoogleAuthenticationError.missingResult))
                     return
                 }
 
@@ -49,33 +49,33 @@ public class SignInWithGoogle: ISignInWithGoogle {
 
     /// Attempts to restore a previous user sign-in without interaction.
     /// - Returns: A publisher of the user Google authentication token or an error
-    public func restorePreviousSignIn() -> AnyPublisher<String, SignInWithGoogleError> {
+    public func restorePreviousSignIn() -> AnyPublisher<String, GoogleAuthenticationError> {
         restorePreviousSignIn()
             .tryMap { user in
                 if let token = user.idToken?.tokenString {
                     return token
                 }
 
-                throw SignInWithGoogleError.missingUser
+                throw GoogleAuthenticationError.missingUser
             }
             .mapError {
-                $0 as? SignInWithGoogleError ?? .missingUser
+                $0 as? GoogleAuthenticationError ?? .missingUser
             }
             .eraseToAnyPublisher()
     }
 
     /// Attempts to restore a previous user sign-in without interaction.
     /// - Returns: A publisher of tGIDGoogleUser or an error
-    public func restorePreviousSignIn() -> AnyPublisher<GIDGoogleUser, SignInWithGoogleError> {
+    public func restorePreviousSignIn() -> AnyPublisher<GIDGoogleUser, GoogleAuthenticationError> {
         Future { promise in
             GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
                 if let error = error as? GIDSignInError {
-                    promise(.failure(error.asSignInWithGoogleError()))
+                    promise(.failure(error.asGoogleAuthenticationError()))
                     return
                 }
 
                 guard let user = user else {
-                    promise(.failure(SignInWithGoogleError.missingUser))
+                    promise(.failure(GoogleAuthenticationError.missingUser))
                     return
                 }
 
@@ -88,17 +88,17 @@ public class SignInWithGoogle: ISignInWithGoogle {
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of the user Google authentication token or an error
-    public func signIn(controller: UIViewController) -> AnyPublisher<String, SignInWithGoogleError> {
+    public func signIn(controller: UIViewController) -> AnyPublisher<String, GoogleAuthenticationError> {
         signIn(controller: controller)
             .tryMap { result in
                 if let idToken = result.user.idToken?.tokenString {
                     return idToken
                 }
 
-                throw SignInWithGoogleError.missingToken
+                throw GoogleAuthenticationError.missingToken
             }
             .mapError {
-                $0 as? SignInWithGoogleError ?? .missingToken
+                $0 as? GoogleAuthenticationError ?? .missingToken
             }
             .eraseToAnyPublisher()
     }
@@ -106,7 +106,7 @@ public class SignInWithGoogle: ISignInWithGoogle {
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of GIDGoogleUser or an error
-    public func signIn(controller: UIViewController) -> AnyPublisher<GIDGoogleUser, SignInWithGoogleError> {
+    public func signIn(controller: UIViewController) -> AnyPublisher<GIDGoogleUser, GoogleAuthenticationError> {
         signIn(controller: controller)
             .map { $0.user }
             .eraseToAnyPublisher()
@@ -115,16 +115,16 @@ public class SignInWithGoogle: ISignInWithGoogle {
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of GIDSignInResult or an error
-    public func signIn(controller: UIViewController) -> AnyPublisher<GIDSignInResult, SignInWithGoogleError> {
+    public func signIn(controller: UIViewController) -> AnyPublisher<GIDSignInResult, GoogleAuthenticationError> {
         Future { promise  in
             GIDSignIn.sharedInstance.signIn(withPresenting: controller) { signInResult, error in
                 if let error = error as? GIDSignInError {
-                    promise(.failure(error.asSignInWithGoogleError()))
+                    promise(.failure(error.asGoogleAuthenticationError()))
                     return
                 }
 
                 guard let result = signInResult else {
-                    promise(.failure(SignInWithGoogleError.missingResult))
+                    promise(.failure(GoogleAuthenticationError.missingResult))
                     return
                 }
 

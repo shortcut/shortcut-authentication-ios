@@ -1,6 +1,6 @@
 //
 //  AuthenticationManager.swift
-//  SignInWithGoogleExample
+//  GoogleAuthenticationExample
 //
 //  Created by Sheikh Bayazid on 2023-01-13.
 //  Copyright © 2023 Shortcut Scandinavia Apps AB. All rights reserved.
@@ -8,22 +8,22 @@
 
 import Combine
 import Foundation
-import SignInWithGoogle
+import GoogleAuthentication
 import UIKit
 
 final class ViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
-    private let googleIdSignIn = SignInWithGoogle()
+    private let googleAuthentication = GoogleAuthentication()
 
     @Published private(set) var authToken: String?
 
     func handleOpenAppURL(_ url: URL) {
-        googleIdSignIn.handleOpenURL(url)
+        googleAuthentication.handleOpenURL(url)
     }
 
     func restorePreviousSignIn() {
-        googleIdSignIn.restorePreviousSignIn()
+        googleAuthentication.restorePreviousSignIn()
             .receive(on: RunLoop.main)
             .sink { completion in
                 switch completion {
@@ -44,7 +44,7 @@ final class ViewModel: ObservableObject {
             return
         }
 
-        googleIdSignIn.signIn(controller: rootViewController)
+        googleAuthentication.signIn(controller: rootViewController)
             .receive(on: RunLoop.main)
             .sink { completion in
                 switch completion {
@@ -61,7 +61,7 @@ final class ViewModel: ObservableObject {
     }
 
     func signOut() {
-        googleIdSignIn.signOut()
+        googleAuthentication.signOut()
         authToken = nil
     }
 }

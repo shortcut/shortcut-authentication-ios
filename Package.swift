@@ -15,7 +15,7 @@ let package = Package(
             name: "ShortcutAuthentication",
             targets: [
                 "AppleIdSignIn",
-                "SignInWithGoogle"
+                "GoogleAuthentication"
             ]
         )
     ],
@@ -37,16 +37,16 @@ let package = Package(
             path: "AppleIdSignIn/Tests"
         ),
         .target(
-            name: "SignInWithGoogle",
+            name: "GoogleAuthentication",
             dependencies: [
                 .product(name: "GoogleSignIn", package: "googlesignin-ios")
             ],
-            path: "SignInWithGoogle/Sources"
+            path: "GoogleAuthentication/Sources"
         ),
         .testTarget(
-            name: "SignInWithGoogleTests",
-            dependencies: ["SignInWithGoogle"],
-            path: "SignInWithGoogle/Tests"
+            name: "GoogleAuthenticationTests",
+            dependencies: ["GoogleAuthentication"],
+            path: "GoogleAuthentication/Tests"
         )
     ]
 )

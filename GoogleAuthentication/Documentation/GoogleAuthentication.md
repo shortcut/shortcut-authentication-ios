@@ -1,4 +1,4 @@
-# Sign In With Google
+# Google Authentication
 Shortcut Authentication provides a convenient way to sign in user with Google using GoogleSignIn and Combine.
 
 ## Important
@@ -9,11 +9,11 @@ Before you start using this package, you'll need to complete these following ste
 To see an example checkout the [example](Example) project.
 
 ## Usage
-Once these steps are complete, you can start adding the support for SignInWithGoogle.
+Once these steps are complete, you can start adding the support for GoogleAuthentication.
 
-1. Create an instance of SignInWithGoogle:
+1. Create an instance of GoogleAuthentication:
 ```
-private let googleIdSignIn = SignInWithGoogle()
+private let googleAuthentication = GoogleAuthentication()
 ```
 
 2.  Handle the authentication redirect URL:
@@ -21,7 +21,7 @@ In your app's window or scene, register a handler to receive the URL and call ha
 
 ```
     func handleOpenAppURL(_ url: URL) {
-        googleIdSignIn.handleOpenURL(url)
+        googleAuthentication.handleOpenURL(url)
     }
 ```
     
@@ -30,7 +30,7 @@ If you're using SwiftUI, add a call to restorePreviousSignIn in onAppear for you
 
 ```
     func restorePreviousSignIn() {
-        googleIdSignIn.restorePreviousSignIn()
+        googleAuthentication.restorePreviousSignIn()
             .receive(on: RunLoop.main)
             .sink { completion in
                 switch completion {
@@ -67,7 +67,7 @@ Sign in a user using `signIn(controller:)`. It returns a token as a `String` as 
         return
     }
 
-    googleIdSignIn.signIn(controller: rootViewController)
+    googleAuthentication.signIn(controller: rootViewController)
         .receive(on: RunLoop.main)
         .sink { completion in
             switch completion {
@@ -91,7 +91,7 @@ If you'll need to refresh the user use `refreshTokenIfNeeded(user:)` and pass th
         return
     }
 
-    googleIdSignIn.refreshTokenIfNeeded(user: user)
+    googleAuthentication.refreshTokenIfNeeded(user: user)
         .receive(on: RunLoop.main)
         .sink { completion in
             switch completion {

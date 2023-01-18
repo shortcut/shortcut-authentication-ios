@@ -1,5 +1,5 @@
 //
-//  SignInWithGoogleError.swift
+//  GoogleAuthenticationError.swift
 //  ShortcutAuthentication
 //
 //  Created by Sheikh Bayazid on 2023-01-13.
@@ -9,7 +9,7 @@
 import Foundation
 import GoogleSignIn
 
-public enum SignInWithGoogleError: Error {
+public enum GoogleAuthenticationError: Error {
     /// Indicates the user canceled the sign in request.
     case cancelled
 
