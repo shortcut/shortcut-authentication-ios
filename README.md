@@ -10,6 +10,6 @@ Contains authentication support for multiple providers.
 ## Features
 
 - [ ] Biometric authentication (FaceID/TouchID)
-- [x] [Sign in with Apple](AppleIdSignIn/Documentation/AppleIdSignIn.md)
+- [x] [Apple Authentication](AppleAuthentication/Documentation/AppleAuthentication.md)
 - [x] [Google Authentication](GoogleAuthentication/Documentation/GoogleAuthentication.md)
 - [ ] Sign in with Swedish BankID

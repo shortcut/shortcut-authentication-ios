@@ -1,5 +1,5 @@
 //
-//  AppleIdSignIn.swift
+//  AppleAuthentication.swift
 //  ShortcutAuthentication
 //
 //  Created by Sheikh Bayazid on 2023-01-09.
@@ -9,11 +9,11 @@
 import AuthenticationServices
 import Combine
 
-public class AppleIdSignIn: NSObject, IAppleIdSignIn {
+public class AppleAuthentication: NSObject, IAppleAuthentication {
     private var cancellables = Set<AnyCancellable>()
 
     var credentialStateSubject = PassthroughSubject<AppleIdCredentialState, Error>()
-    var authAppleIdCredentialPublisher: PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>?
+    var authAppleIdCredentialPublisher: PassthroughSubject<ASAuthorizationAppleIDCredential, AppleAuthenticationError>?
 
     public lazy var credentialStatePublisher = credentialStateSubject.eraseToAnyPublisher()
 
@@ -30,19 +30,19 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
 
     /// Logs in user with AppleId.
     /// - Returns: A publisher of success token or AppleIdAuthenticatorError
-    public func authenticate(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<String, AppleIdSignInError> {
+    public func authenticate(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<String, AppleAuthenticationError> {
         authenticate(requestedScopes: requestedScopes)
             .tryMap { credentials in
                 guard
                     let tokenData = credentials.identityToken,
                     let token = String(data: tokenData, encoding: .utf8)
                 else {
-                    throw AppleIdSignInError.failedToRetrieveToken
+                    throw AppleAuthenticationError.failedToRetrieveToken
                 }
                 return token
             }
             .mapError {
-                $0 as? AppleIdSignInError ?? .failedToRetrieveToken
+                $0 as? AppleAuthenticationError ?? .failedToRetrieveToken
             }
             .eraseToAnyPublisher()
     }
@@ -50,7 +50,7 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
     /// Logs in user with AppleId.
     /// - Parameter requestedScopes: The contact information to be requested from the user during authentication. Default values are fullName and email.
     /// - Returns: A publisher of success ASAuthorizationAppleIDCredential or AppleIdAuthenticatorError
-    public func authenticate(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<ASAuthorizationAppleIDCredential, AppleIdSignInError> {
+    public func authenticate(requestedScopes: [ASAuthorization.Scope]?) -> AnyPublisher<ASAuthorizationAppleIDCredential, AppleAuthenticationError> {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = requestedScopes
@@ -61,7 +61,7 @@ public class AppleIdSignIn: NSObject, IAppleIdSignIn {
         authorizationController.performRequests()
 
         // We need to create a new subject every time, so when we get error our subscription to this publisher won't be broken
-        let authAppleIdCredentialPublisher = PassthroughSubject<ASAuthorizationAppleIDCredential, AppleIdSignInError>()
+        let authAppleIdCredentialPublisher = PassthroughSubject<ASAuthorizationAppleIDCredential, AppleAuthenticationError>()
         self.authAppleIdCredentialPublisher = authAppleIdCredentialPublisher
 
         // The events are sent from the delegate
