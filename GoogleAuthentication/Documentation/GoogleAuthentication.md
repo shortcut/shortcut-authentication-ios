@@ -6,18 +6,19 @@ Before you start using this package, you'll need to complete these following ste
 
 1. Get OAuth client ID from [Google](https://developers.google.com/identity/sign-in/ios/start-integrating)
 2. Add the OAuth client ID as GIDClientID and reversed OAuth client ID as URLSchemes in your project info.plist file.
-To see an example checkout the [example](Example) project.
+
+To see an example go to [Google Documentation](https://developers.google.com/identity/sign-in/ios/start-integrating) or checkout the [example](Example) project.
 
 ## Usage
 Once these steps are complete, you can start adding the support for GoogleAuthentication.
 
-1. Create an instance of GoogleAuthentication:
+### Create an instance of GoogleAuthentication:
 ```
 private let googleAuthentication = GoogleAuthentication()
 ```
 
-2.  Handle the authentication redirect URL:
-In your app's window or scene, register a handler to receive the URL and call handleOpenURL.
+###  Handle the authentication redirect URL:
+In your app's window or scene, register a handler to receive the URL and call `handleOpenURL(_:)`.
 
 ```
     func handleOpenAppURL(_ url: URL) {
@@ -25,8 +26,8 @@ In your app's window or scene, register a handler to receive the URL and call ha
     }
 ```
     
-3. Restore previous sign in:
-If you're using SwiftUI, add a call to restorePreviousSignIn in onAppear for your initial view:
+### Restore previous sign in:
+If you'd like to restore your user on appear of your app's window, call `restorePreviousSignIn()` on onAppear of the app's window view:
 
 ```
     func restorePreviousSignIn() {
@@ -47,7 +48,7 @@ If you're using SwiftUI, add a call to restorePreviousSignIn in onAppear for you
     }
 ```
     
-4. Calling the handleOpenAppURL and restorePreviousSignIn in App's window:
+### Calling the `handleOpenAppURL(_:)` and `restorePreviousSignIn()` in App's window:
 ```
         WindowGroup {
             ContentView()
@@ -60,7 +61,7 @@ If you're using SwiftUI, add a call to restorePreviousSignIn in onAppear for you
         }
 ```
 
-5. Sign in with Google:
+### Sign in with Google:
 Sign in a user using `signIn(controller:)`. It returns a token as a `String` as well as `GIDGoogleUser` and `GIDSignInResult`.
 ```
     guard let rootViewController = UIApplication.shared.rootViewController else {
@@ -83,7 +84,7 @@ Sign in a user using `signIn(controller:)`. It returns a token as a `String` as 
         .store(in: &cancellables)
 ```
 
-6. Restore token if needed:
+### Restore token if needed:
 If you'll need to refresh the user use `refreshTokenIfNeeded(user:)` and pass the user, it returns the refreshed user.
 
 ```
