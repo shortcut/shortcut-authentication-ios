@@ -1,4 +1,4 @@
-# GoogleID Sign In
+# Sign In With Google
 Shortcut Authentication provides a convenient way to sign in user with Google using GoogleSignIn and Combine.
 
 ## Important
@@ -9,11 +9,11 @@ Before you start using this package, you'll need to complete these following ste
 To see an example checkout the [example](Example) project.
 
 ## Usage
-Once these steps are complete, you can start adding the support for GoogleIdSignIn.
+Once these steps are complete, you can start adding the support for SignInWithGoogle.
 
-1. Create an instance of GoogleIdSignIn:
+1. Create an instance of SignInWithGoogle:
 ```
-private let googleIdSignIn = GoogleIdSignIn()
+private let googleIdSignIn = SignInWithGoogle()
 ```
 
 2.  Handle the authentication redirect URL:

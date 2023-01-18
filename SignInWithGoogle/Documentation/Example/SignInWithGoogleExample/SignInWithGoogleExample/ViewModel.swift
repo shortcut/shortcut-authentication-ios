@@ -8,13 +8,13 @@
 
 import Combine
 import Foundation
-import GoogleIdSignIn
+import SignInWithGoogle
 import UIKit
 
 final class ViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
-    private let googleIdSignIn = GoogleIdSignIn()
+    private let googleIdSignIn = SignInWithGoogle()
 
     @Published private(set) var authToken: String?
 

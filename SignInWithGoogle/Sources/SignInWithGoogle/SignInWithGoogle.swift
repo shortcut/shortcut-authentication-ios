@@ -1,5 +1,5 @@
 //
-//  GoogleIdSignIn.swift
+//  SignInWithGoogle.swift
 //  ShortcutAuthentication
 //
 //  Created by Sheikh Bayazid on 2023-01-09.
@@ -11,7 +11,7 @@ import Foundation
 import GoogleSignIn
 import SwiftUI
 
-public class GoogleIdSignIn: IGoogleIdSignIn {
+public class SignInWithGoogle: ISignInWithGoogle {
     /// The `GIDGoogleUser` representing the current user or `nil` if there is no signed-in user.
     public var currentUser: GIDGoogleUser? {
         GIDSignIn.sharedInstance.currentUser
@@ -28,16 +28,16 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
     /// Refresh the user’s access and ID tokens if they have expired or are about to expire.
     /// - Parameter user: GIDGoogleUser
     /// - Returns: A publisher of GIDGoogleUser or an error
-    public func refreshTokenIfNeeded(user: GIDGoogleUser) -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError> {
+    public func refreshTokenIfNeeded(user: GIDGoogleUser) -> AnyPublisher<GIDGoogleUser, SignInWithGoogleError> {
         Future { promise in
             user.refreshTokensIfNeeded { user, error in
                 if let error = error as? GIDSignInError {
-                    promise(.failure(error.asGoogleIdSignInError()))
+                    promise(.failure(error.asSignInWithGoogleError()))
                     return
                 }
 
                 guard let user = user else {
-                    promise(.failure(GoogleIdSignInError.missingResult))
+                    promise(.failure(SignInWithGoogleError.missingResult))
                     return
                 }
 
@@ -49,33 +49,33 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
 
     /// Attempts to restore a previous user sign-in without interaction.
     /// - Returns: A publisher of the user Google authentication token or an error
-    public func restorePreviousSignIn() -> AnyPublisher<String, GoogleIdSignInError> {
+    public func restorePreviousSignIn() -> AnyPublisher<String, SignInWithGoogleError> {
         restorePreviousSignIn()
             .tryMap { user in
                 if let token = user.idToken?.tokenString {
                     return token
                 }
 
-                throw GoogleIdSignInError.missingUser
+                throw SignInWithGoogleError.missingUser
             }
             .mapError {
-                $0 as? GoogleIdSignInError ?? .missingUser
+                $0 as? SignInWithGoogleError ?? .missingUser
             }
             .eraseToAnyPublisher()
     }
 
     /// Attempts to restore a previous user sign-in without interaction.
     /// - Returns: A publisher of tGIDGoogleUser or an error
-    public func restorePreviousSignIn() -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError> {
+    public func restorePreviousSignIn() -> AnyPublisher<GIDGoogleUser, SignInWithGoogleError> {
         Future { promise in
             GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
                 if let error = error as? GIDSignInError {
-                    promise(.failure(error.asGoogleIdSignInError()))
+                    promise(.failure(error.asSignInWithGoogleError()))
                     return
                 }
 
                 guard let user = user else {
-                    promise(.failure(GoogleIdSignInError.missingUser))
+                    promise(.failure(SignInWithGoogleError.missingUser))
                     return
                 }
 
@@ -88,17 +88,17 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of the user Google authentication token or an error
-    public func signIn(controller: UIViewController) -> AnyPublisher<String, GoogleIdSignInError> {
+    public func signIn(controller: UIViewController) -> AnyPublisher<String, SignInWithGoogleError> {
         signIn(controller: controller)
             .tryMap { result in
                 if let idToken = result.user.idToken?.tokenString {
                     return idToken
                 }
 
-                throw GoogleIdSignInError.missingToken
+                throw SignInWithGoogleError.missingToken
             }
             .mapError {
-                $0 as? GoogleIdSignInError ?? .missingToken
+                $0 as? SignInWithGoogleError ?? .missingToken
             }
             .eraseToAnyPublisher()
     }
@@ -106,7 +106,7 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of GIDGoogleUser or an error
-    public func signIn(controller: UIViewController) -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError> {
+    public func signIn(controller: UIViewController) -> AnyPublisher<GIDGoogleUser, SignInWithGoogleError> {
         signIn(controller: controller)
             .map { $0.user }
             .eraseToAnyPublisher()
@@ -115,16 +115,16 @@ public class GoogleIdSignIn: IGoogleIdSignIn {
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of GIDSignInResult or an error
-    public func signIn(controller: UIViewController) -> AnyPublisher<GIDSignInResult, GoogleIdSignInError> {
+    public func signIn(controller: UIViewController) -> AnyPublisher<GIDSignInResult, SignInWithGoogleError> {
         Future { promise  in
             GIDSignIn.sharedInstance.signIn(withPresenting: controller) { signInResult, error in
                 if let error = error as? GIDSignInError {
-                    promise(.failure(error.asGoogleIdSignInError()))
+                    promise(.failure(error.asSignInWithGoogleError()))
                     return
                 }
 
                 guard let result = signInResult else {
-                    promise(.failure(GoogleIdSignInError.missingResult))
+                    promise(.failure(SignInWithGoogleError.missingResult))
                     return
                 }
 

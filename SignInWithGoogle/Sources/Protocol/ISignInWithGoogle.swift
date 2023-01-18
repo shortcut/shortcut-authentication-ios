@@ -1,5 +1,5 @@
 //
-//  IGoogleIdSignIn.swift
+//  ISignInWithGoogle.swift
 //  ShortcutAuthentication
 //
 //  Created by Sheikh Bayazid on 2023-01-13.
@@ -11,7 +11,7 @@ import Foundation
 import GoogleSignIn
 import SwiftUI
 
-public protocol IGoogleIdSignIn {
+public protocol ISignInWithGoogle {
     /// The `GIDGoogleUser` representing the current user or `nil` if there is no signed-in user.
     var currentUser: GIDGoogleUser? { get }
 
@@ -22,30 +22,30 @@ public protocol IGoogleIdSignIn {
     /// Refresh the user’s access and ID tokens if they have expired or are about to expire.
     /// - Parameter user: GIDGoogleUser
     /// - Returns: A publisher of GIDGoogleUser or an error
-    func refreshTokenIfNeeded(user: GIDGoogleUser) -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError>
+    func refreshTokenIfNeeded(user: GIDGoogleUser) -> AnyPublisher<GIDGoogleUser, SignInWithGoogleError>
 
     /// Attempts to restore a previous user sign-in without interaction.
     /// - Returns: A publisher of the user Google authentication token or an error
-    func restorePreviousSignIn() -> AnyPublisher<String, GoogleIdSignInError>
+    func restorePreviousSignIn() -> AnyPublisher<String, SignInWithGoogleError>
 
     /// Attempts to restore a previous user sign-in without interaction.
     /// - Returns: A publisher of GIDGoogleUser or an error
-    func restorePreviousSignIn() -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError>
+    func restorePreviousSignIn() -> AnyPublisher<GIDGoogleUser, SignInWithGoogleError>
 
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of the user Google authentication token or an error
-    func signIn(controller: UIViewController) -> AnyPublisher<String, GoogleIdSignInError>
+    func signIn(controller: UIViewController) -> AnyPublisher<String, SignInWithGoogleError>
 
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of GIDGoogleUser or an error
-    func signIn(controller: UIViewController) -> AnyPublisher<GIDGoogleUser, GoogleIdSignInError>
+    func signIn(controller: UIViewController) -> AnyPublisher<GIDGoogleUser, SignInWithGoogleError>
 
     /// Signs in a user.
     /// - Parameter controller: The presenting viewController
     /// - Returns: A publisher of GIDSignInResult or an error
-    func signIn(controller: UIViewController) -> AnyPublisher<GIDSignInResult, GoogleIdSignInError>
+    func signIn(controller: UIViewController) -> AnyPublisher<GIDSignInResult, SignInWithGoogleError>
 
     /// Signs out the `currentUser`, removing it from the keychain.
     func signOut()
