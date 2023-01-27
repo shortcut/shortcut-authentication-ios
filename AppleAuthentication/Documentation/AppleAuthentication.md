@@ -6,6 +6,11 @@ To authenticate user with AppleID, use IAppleAuthentication protocol which provi
 Before you start using this package, you'll need to add **_Sign in with Apple_** capability to your project, otherwise it will not work.
 
 Create an instance of IAppleAuthentication. If you would like to listen to the account revoke notification from users iCloud account you'll need to keep the instance alive.
+
+```
+import AppleAuthentication
+```
+
 ```
 private let appleAuthentication = AppleAuthentication()
 ```

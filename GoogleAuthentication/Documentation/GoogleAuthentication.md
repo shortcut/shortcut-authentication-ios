@@ -13,6 +13,11 @@ To see an example go to [Google Documentation](https://developers.google.com/ide
 Once these steps are complete, you can start adding the support for GoogleAuthentication.
 
 ### Create an instance of GoogleAuthentication:
+
+```
+import GoogleAuthentication
+```
+
 ```
 private let googleAuthentication = GoogleAuthentication()
 ```
