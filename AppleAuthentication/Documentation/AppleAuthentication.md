@@ -34,8 +34,8 @@ appleAuthentication.authenticate()
     }
     .store(in: &cancellables)
 ```
-### Get the Apple Id credential state from given user id:
-`AppleIdCredentialSate` is an enum which represents the states of AppleID credentials. For example,  `.authorize` or `.revoked`.
+### Get AppleID credential state:
+Use getCredentialState to get `AppleIdCredentialSate`. `AppleIdCredentialSate` is an enum which represents the states of AppleID credentials. For example:  `.authorize` or `.revoked`.
 ```
 appleAuthentication.getCredentialState(for: userId)
     .receive(on: RunLoop.main)
@@ -56,7 +56,7 @@ appleAuthentication.getCredentialState(for: userId)
     .store(in: &cancellables)
 ```
 ### Listen to the changes of the `credentialStatePublisher`:
-When the state is revoked, it's recommended to log out the user but it's not obligated by Apple.
+If you'd like to listen to the account revoke notification from user's iCloud account use `credentialStatePublisher`. When the state is revoked, it's recommended to log out the user but it's not obligated by Apple.
 ```
 appleAuthentication.credentialStatePublisher
     .receive(on: RunLoop.main)
